@@ -1,0 +1,92 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: cs\n"
+
+msgctxt "#30000"
+msgid "Recordings"
+msgstr "Nahrávky"
+
+msgctxt "#30001"
+msgid "Delete recording"
+msgstr "Odstranit nahrávku"
+
+msgctxt "#30002"
+msgid "Are you sure you want to delete recording?"
+msgstr "Opravdu chcete odstranit nahrávku?"
+
+msgctxt "#30100"
+msgid "Account"
+msgstr "Účet"
+
+msgctxt "#30102"
+msgid "User Name"
+msgstr "Jméno"
+
+msgctxt "#30103"
+msgid "Password"
+msgstr "Heslo"
+
+msgctxt "#30104"
+msgid "When no device is available use oldest"
+msgstr "Jestli není dostupné žádné zařízení, použij nejstarší."
+
+msgctxt "#30120"
+msgid "Playlist"
+msgstr "Playlist"
+
+msgctxt "#30121"
+msgid "M3U"
+msgstr "M3U"
+
+msgctxt "#30123"
+msgid "Directory of playlist"
+msgstr "Adresář"
+
+msgctxt "#30124"
+msgid "File name"
+msgstr "Soubor"
+
+msgctxt "#30140"
+msgid "EPG"
+msgstr "EPG"
+
+msgctxt "#30141"
+msgid "XMLTV"
+msgstr "XMLTV"
+
+msgctxt "#30142"
+msgid "Enabled EPG"
+msgstr "Generovat EPG"
+
+msgctxt "#30143"
+msgid "Directory of EPG file"
+msgstr "Adresář"
+
+msgctxt "#30144"
+msgid "File Name"
+msgstr "Soubor"
+
+msgctxt "#30145"
+msgid "Days"
+msgstr "Počet dní"
+
+msgctxt "#30301"
+msgid "Too many devices, select device to disconnect"
+msgstr "Překročený limit připojených zařízení. Vyberte zařízení které se má odpojit."
+
+msgctxt "#30501"
+msgid "User name or password is not defined"
+msgstr "Jméno nebo heslo není nastavené"
+
+msgctxt "#30502"
+msgid "User name or password is not valid"
+msgstr "Jméno nebo heslo není správné"
+
+msgctxt "#30503"
+msgid "Internet connection error"
+msgstr "Není dostupné internetové připojení"
+
+msgctxt "#30504"
+msgid "Stream is not available!"
+msgstr "Stream není k dispozici!"
