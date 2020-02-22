@@ -12,7 +12,7 @@
     <extension point="xbmc.service" library="service.py"/>
     <extension point="xbmc.addon.metadata">
         <reuselanguageinvoker>true</reuselanguageinvoker>
-        <summary lang="en_GB">T-Mobile TV GO Addon</summary>
+        <summary lang="en_GB">Tmobile TV GO Addon</summary>
         <description lang="en_GB">PVR playlist and EPG generator for Magio Go Service</description>
         <description lang="cs_CZ">PVR playlist a EPG generátor pro službu T-Mobile TV GO. Stream ve Full HD (1080p)</description>
         <license>MIT</license>
