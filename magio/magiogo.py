@@ -219,6 +219,13 @@ class MagioGo(IPTVClient):
 
     @staticmethod
     def _programme_data(pi):
+
+        def safe_int(value, default=None):
+            try:
+                return int(value)
+            except (ValueError, TypeError):
+                return default
+
         programme = Programme()
         programme.id = pi['programId']
         programme.title = pi['title']
@@ -226,15 +233,25 @@ class MagioGo(IPTVClient):
 
         pv = pi['programValue']
         if pv['episodeId'] is not None:
-            programme.episodeNo = int(pv['episodeId'])
+            programme.episodeNo = safe_int(pv['episodeId'])
         if pv['seasonNumber'] is not None:
-            programme.seasonNo = int(pv['seasonNumber'])
-        if len(pi['images']) > 0:
-            programme.cover = pi['images'][0]
+            programme.seasonNo = safe_int(pv['seasonNumber'])
+        if pv['creationYear'] is not None:
+            programme.year = safe_int(pv['creationYear'])
+        for i in pi['images']:
+            programme.thumbnail = i
+            break
+        for i in pi['images']:
+            if "_VERT" in i:
+                programme.poster = i
+                break
         for d in pi['programRole']['directors']:
             programme.directors.append(d['fullName'])
         for a in pi['programRole']['actors']:
             programme.actors.append(a['fullName'])
+        if pi['programCategory'] is not None:
+            for c in pi['programCategory']['subCategories']:
+                programme.genres.append(c['desc'])
 
         return programme
 
