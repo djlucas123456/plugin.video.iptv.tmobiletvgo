@@ -9,6 +9,8 @@ except:
     pass
 
 from builtins import super
+from urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
 from iptv.client import IPTVClient, UserNotDefinedException, Channel, StreamInfo, Programme, UserInvalidException, dummy_progress, \
     NetConnectionError
 
@@ -40,15 +42,27 @@ class MagioGoDevice:
 class MagioGoRecording:
     def __init__(self):
         self.id = ''
-        self.is_series = False
         self.programme = None
+
+
+class MagioQuality:
+    low = 'p2'
+    medium = 'p3'
+    high = 'p4'
+    extra = 'p5'
+
+    @staticmethod
+    def get(index):
+        return {0: MagioQuality.low, 1: MagioQuality.medium, 2: MagioQuality.high, 3: MagioQuality.extra}.get(index, MagioQuality.high)
 
 
 class MagioGo(IPTVClient):
 
-    def __init__(self, storage_dir, user_name, password):
+    def __init__(self, storage_dir, user_name, password, quality=MagioQuality.medium):
         self._user_name = user_name
         self._password = password
+        self._quality = quality
+        self._device = 'Web Browser'
         self._data = MagioGoSessionData()
         super().__init__(storage_dir, '%s.session' % self._user_name)
 
@@ -61,6 +75,7 @@ class MagioGo(IPTVClient):
                 self._data.type = resp['token']['type']
                 self._store_session(self._data)
         else:
+            self._store_session(MagioGoSessionData())
             error_code = resp['errorCode']
             if error_code == 'INVALID_CREDENTIALS':
                 raise UserInvalidException()
@@ -68,24 +83,31 @@ class MagioGo(IPTVClient):
 
     def _auth_headers(self):
         return {'Authorization': self._data.type + ' ' + self._data.access_token,
-                'Origin': 'https://www.magiogo.sk', 'Pragma': 'no-cache', 'Referer': 'https://www.magiogo.sk/',
+                'Origin': 'https://tvgo.t-mobile.cz', 'Pragma': 'no-cache', 'Referer': 'https://tvgo.t-mobile.cz/',
                 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Site': 'cross-site', 'User-Agent': UA}
 
+    @staticmethod
+    def _request():
+        session = requests.Session()
+        session.mount('https://', HTTPAdapter(max_retries=Retry(total=5, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])))
+        return session
+
     def _get(self, url, params=None, **kwargs):
+
         try:
-            resp = requests.get(url, params=params, **kwargs).json()
+            resp = self._request().get(url, params=params, **kwargs).json()
             self._check_response(resp)
             return resp
         except requests.exceptions.ConnectionError as err:
-            raise NetConnectionError(err.message)
+            raise NetConnectionError(str(err))
 
     def _post(self, url, data=None, json=None, **kwargs):
         try:
-            resp = requests.post(url, data=data, json=json, **kwargs).json()
+            resp = self._request().post(url, data=data, json=json, **kwargs).json()
             self._check_response(resp)
             return resp
         except requests.exceptions.ConnectionError as err:
-            raise NetConnectionError(err.message)
+            raise NetConnectionError(str(err))
 
     def _login(self):
         if (self._user_name == '') or (self._password == ''):
@@ -96,13 +118,13 @@ class MagioGo(IPTVClient):
         if not self._data.access_token:
             self._post('https://czgo.magio.tv/v2/auth/init',
                        params={'dsid': 'Netscape.' + str(int(time.time())) + '.' + str(random.random()),
-                               'deviceName': 'Netscape',
-                               'deviceType': 'OTT_LINUX',
+                               'deviceName': self._device,
+                               'deviceType': 'OTT_ANDROID',
                                'osVersion': '0.0.0',
                                'appVersion': '0.0.0',
-                               'language': 'CZ'},
-                       headers={'Origin': 'https://www.magiogo.sk', 'Pragma': 'no-cache',
-                                'Referer': 'https://www.magiogo.sk/', 'User-Agent': UA,
+                               'language': 'SK'},
+                       headers={'Origin': 'https://tvgo.t-mobile.cz', 'Pragma': 'no-cache',
+                                'Referer': 'https://tvgo.t-mobile.cz/', 'User-Agent': UA,
                                 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Site': 'cross-site'})
 
             self._post('https://czgo.magio.tv/v2/auth/login',
@@ -140,8 +162,8 @@ class MagioGo(IPTVClient):
     def channel_stream_info(self, channel_id, programme_id=None):
         self._login()
         resp = self._get('https://czgo.magio.tv/v2/television/stream-url',
-                         params={'service': 'LIVE', 'name': 'Netscape', 'devtype': 'OTT_ANDROID',
-                                 'id': channel_id, 'prof': 'p5', 'ecid': '', 'drm': 'verimatrix'},
+                         params={'service': 'LIVE', 'name': self._device, 'devtype': 'OTT_ANDROID',
+                                 'id': channel_id, 'prof': self._quality, 'ecid': '', 'drm': 'verimatrix'},
                          headers=self._auth_headers())
         si = StreamInfo()
         si.url = resp['url']
@@ -151,8 +173,8 @@ class MagioGo(IPTVClient):
     def programme_stream_info(self, programme_id):
         self._login()
         resp = self._get('https://czgo.magio.tv/v2/television/stream-url',
-                         params={'service': 'ARCHIVE', 'name': 'Netscape', 'devtype': 'OTT_ANDROID',
-                                 'id': programme_id, 'prof': 'p5', 'ecid': '', 'drm': 'verimatrix'},
+                         params={'service': 'ARCHIVE', 'name': self._device, 'devtype': 'OTT_ANDROID',
+                                 'id': programme_id, 'prof': self._quality, 'ecid': '', 'drm': 'verimatrix'},
                          headers=self._auth_headers())
         si = StreamInfo()
         si.url = resp['url']
@@ -294,7 +316,6 @@ class MagioGo(IPTVClient):
 
             recording = MagioGoRecording()
             recording.id = str(i['id'])
-            recording.is_series = p['program']['programValue']['episodeId'] is not None
 
             programme = self._programme_data(p['program'])
             programme.id = str(p['id'])
@@ -319,14 +340,12 @@ class MagioGo(IPTVClient):
                   params={'recordingIds': recording_id, 'storage': 'go'},
                   headers=self._auth_headers())
 
-    def recording_stream_info(self, recording_id, programme_id, is_series):
-        # type: (str, str, bool) -> StreamInfo
+    def recording_stream_info(self, recording_id):
+        # type: (str) -> StreamInfo
         self._login()
-        #if not is_series:
-        #    return self.programme_stream_info(programme_id)
 
         resp = self._get('https://czgo.magio.tv/v2/television/stream-url',
-                         params={'service': 'DVR', 'id': recording_id, 'prof': 'p5', 'ecid': '', 'drm': 'verimatrix'},
+                         params={'service': 'DVR', 'id': recording_id, 'prof': self._quality, 'ecid': '', 'drm': 'verimatrix'},
                          headers=self._auth_headers())
 
         si = StreamInfo()
