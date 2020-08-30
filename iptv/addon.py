@@ -69,13 +69,13 @@ class IPTVAddon(xbmcaddon.Addon):
             xbmcplugin.setResolvedUrl(self._handle, False, xbmcgui.ListItem())
             return
 
-        if type(stream_info.drm) is WidevineDRM:
+        if stream_info.manifest_type in ['mpd', 'hls', 'ism'] and isinstance(stream_info.drm, WidevineDRM):
             import inputstreamhelper
-            is_helper = inputstreamhelper.Helper(stream_info.drm.manifest_type, drm='com.widevine.alpha')
+            is_helper = inputstreamhelper.Helper(stream_info.manifest_type, drm='com.widevine.alpha')
             if is_helper.check_inputstream():
                 item = xbmcgui.ListItem(path=stream_info.url)
                 item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
-                item.setProperty('inputstream.adaptive.manifest_type', stream_info.drm.manifest_type)
+                item.setProperty('inputstream.adaptive.manifest_type', stream_info.manifest_type)
                 item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
                 item.setProperty('inputstream.adaptive.license_key', stream_info.drm.licence_key.to_string())
                 item.setProperty('inputstream.adaptive.license_flags', stream_info.drm.flags)
@@ -95,9 +95,20 @@ class IPTVAddon(xbmcaddon.Addon):
                 if stream_info.drm.media_renewal_time > 0:
                     item.setProperty('inputstream.adaptive.media_renewal_time', stream_info.drm.media_renewal_time)
                 xbmcplugin.setResolvedUrl(self._handle, True, item)
-                return
 
-        if not stream_info.drm:
+        elif stream_info.manifest_type == 'mpd':
+            item = xbmcgui.ListItem(path=stream_info.url)
+            item.setProperty('inputstreamaddon', 'inputstream.adaptive')
+            item.setProperty('inputstream.adaptive.manifest_type', stream_info.manifest_type)
+
+            if stream_info.user_agent:
+                stream_info.headers.update({'User-Agent': stream_info.user_agent})
+            if stream_info.headers:
+                item.setProperty('inputstream.adaptive.stream_headers', '&'.join(['%s=%s' % (k, v) for (k, v) in
+                                                                                  stream_info.headers.items()]))
+            xbmcplugin.setResolvedUrl(self._handle, True, item)
+
+        elif stream_info.manifest_type == 'm3u':
             if stream_info.user_agent:
                 stream_info.headers.update({'User-Agent': stream_info.user_agent})
             if stream_info.headers:
@@ -105,8 +116,8 @@ class IPTVAddon(xbmcaddon.Addon):
             item = xbmcgui.ListItem(path=stream_info.url)
             xbmcplugin.setResolvedUrl(self._handle, True, item)
             return
-
-        xbmcplugin.setResolvedUrl(self._handle, False, xbmcgui.ListItem())
+        else:
+            xbmcplugin.setResolvedUrl(self._handle, False, xbmcgui.ListItem())
 
     def play_channel_route(self, channel_id):
         self._play(self.channel_stream_info(channel_id))
