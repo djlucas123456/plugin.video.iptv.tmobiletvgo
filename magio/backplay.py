@@ -29,7 +29,7 @@ except KeyError:
     exit()
 
 if data[name]['check'] == name:
-    epgdatetime = datetime.datetime.strptime(xbmc.getInfoLabel('ListItem.Date'), "%d.%m.%Y %H:%M") + (datetime.timedelta(hours=-2))
+    epgdatetime = datetime.datetime.strptime(xbmc.getInfoLabel('ListItem.Date'), "%d.%m.%Y %H:%M") + (datetime.timedelta(hours=-1))
     stream = data['server']['1'] + data[name]['server'] + data[name]['quality'] + data[name]['catalog'] + epgdatetime.strftime("%Y%m%d") + "_" + data[name]['channel'] + "_" + epgdatetime.strftime("%Y%m%d_%H%M%S") + data[name]['url']
     code = urllib.urlopen(stream).getcode()
 else:
