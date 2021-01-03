@@ -19,7 +19,7 @@ class proxydt(datetime.datetime):
 #Check first method stream and go to two method stream url
 datetime.datetime = proxydt
 channel = xbmc.getInfoLabel('ListItem.ChannelName').replace("HD", "").replace("FHD", "").replace("hd", "").replace(" ", "").replace("*", "").replace("Č", "C").replace("Ť", "T").replace("í", "i").replace(".", "").lower()
-data = requests.get("https://1url.cz/mz9uP").json()
+data = requests.get("https://1url.cz/Yz9TQ").json()
 try:
     print(data[channel])
 except KeyError:
@@ -36,7 +36,7 @@ if data[channel]['check'] == channel:
     else:
         epg_end = datetime.datetime.strptime(xbmc.getInfoLabel('ListItem.EndTime'), "%H:%M") + (datetime.timedelta(minutes=-2))
         epg_date = datetime.datetime.strptime(xbmc.getInfoLabel('ListItem.Date'), "%d.%m.%Y %H:%M")
-        data_new = requests.get("https://1url.cz/Iz9uc").json()
+        data_new = requests.get("https://1url.cz/Qz9Ti").json()
         UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36"
         headers_token = {'Origin': 'https://tvgo.t-mobile.cz', 'Pragma': 'no-cache', 'Referer': 'https://tvgo.t-mobile.cz/', 'User-Agent': UA, 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Site': 'cross-site'}
         acestoken = requests.post("https://czgo.magio.tv/v2/auth/init?dsid=Netscape." + str(int(time.time())) + "." + str(random.random()) + "&deviceName=Web%20Browser&deviceType=OTT_WIN&osVersion=0.0.0&appVersion=0.0.0&language=CZ", headers = headers_token).json()
