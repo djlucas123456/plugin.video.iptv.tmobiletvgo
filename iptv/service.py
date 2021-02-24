@@ -35,9 +35,6 @@ class IPTVUpdateService(xbmc.Monitor):
         ts = self.addon.getSetting('__next_update')
         self._next_update = datetime.datetime.now() if ts == '' else datetime.datetime.fromtimestamp(float(ts))
 
-    def __del__(self):
-        log('service destroyed')
-
     def create_addon(self):
         # type: () -> IPTVAddon
         raise NotImplementedError("Should have implemented this")
