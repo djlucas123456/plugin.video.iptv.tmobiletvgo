@@ -5,7 +5,7 @@ try:
 
     def log(msg):
         msg = "[%s] %s" % (_addon_id, msg)
-        xbmc.log(msg, level=xbmc.LOGNOTICE)
+        xbmc.log(msg='Test 5 ERROR', level=xbmc.LOGERROR)
 except Exception:
     def log(msg):
         print(msg)
