@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 import datetime
 import time
 import iptv.exports
@@ -34,6 +34,9 @@ class IPTVUpdateService(xbmc.Monitor):
         self.addon = self.create_addon()
         ts = self.addon.getSetting('__next_update')
         self._next_update = datetime.datetime.now() if ts == '' else datetime.datetime.fromtimestamp(float(ts))
+
+    def __del__(self):
+        xbmc.log("service destroyed", level=xbmc.LOGINFO)
 
     def create_addon(self):
         # type: () -> IPTVAddon
