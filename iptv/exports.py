@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 try:
     from typing import List, Dict, Callable
 except:
@@ -24,7 +24,7 @@ def html_escape(text):
 def create_m3u(file_name, channels, url_callback):
     # type: (str, List[Channel], Callable[[Channel, bool], str]) -> None
     with open(file_name, 'w', encoding='utf8') as file:
-        file.write(u'#EXTM3U\n')
+        file.write('#EXTM3U\n')
 
         for c in channels:
             live_url = url_callback(c, False)
@@ -63,7 +63,7 @@ def create_epg(file_name, epg):
                 if p.thumbnail:
                     file.write('<icon src="%s"/>\n' % html_escape(p.thumbnail))
                 if p.genres:
-                    file.write('<category>%s</category>\n' % ', '.join(p.genres))
+                    file.write('<category>%s</category>\n' % html_escape(', '.join(p.genres)))
                 if p.actors or p.directors or p.writers or p.producers:
                     file.write('<credits>\n')
                     for actor in p.actors:
