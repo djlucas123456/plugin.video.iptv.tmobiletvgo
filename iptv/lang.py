@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 import xbmc
 
 _lang = {}
@@ -25,6 +25,29 @@ _lang['en']['creating_epg'] = 'Creating EPG'
 _lang['en']['configuring_addon'] = 'Configuring Addon'
 _lang['en']['iptv_simple_not_installed'] = 'IPTV Simple Client add-on is not installed'
 _lang['en']['iptv_simple_configure'] = 'Change configuration of IPTV Simple Client add-on according {}'
+
+_lang['sk'] = {}
+_lang['sk']['playlist_created'] = 'M3U Playlist bol vytvorený'
+_lang['sk']['playlist_and_epg_created'] = 'M3U Playlist a EPG boli vytvorené'
+_lang['sk']['playlist_or_epg_not_created'] = 'M3U Playlist alebo EPG sa nepodarilo vytvoriť'
+_lang['sk']['live_tv'] = 'Živé vysielanie'
+_lang['sk']['archive'] = 'Archív'
+_lang['sk']['today'] = 'dnes'
+_lang['sk']['yesterday'] = 'včera'
+_lang['sk']['day_1'] = 'pondelok'
+_lang['sk']['day_2'] = 'utorok'
+_lang['sk']['day_3'] = 'streda'
+_lang['sk']['day_4'] = 'štvrtok'
+_lang['sk']['day_5'] = 'piatok'
+_lang['sk']['day_6'] = 'sobota'
+_lang['sk']['day_7'] = 'nedeľa'
+_lang['sk']['day_after'] = 'nasledujúci deň'
+_lang['sk']['day_before'] = 'predošlý deň'
+_lang['sk']['creating_playlist'] = 'Vytváram M3U Playlist'
+_lang['sk']['creating_epg'] = 'Vytváram EPG'
+_lang['sk']['configuring_addon'] = 'Konfigurujem doplnok'
+_lang['sk']['iptv_simple_not_installed'] = 'Doplnok IPTV Simple Client nie je nainštalovaný'
+_lang['sk']['iptv_simple_configure'] = 'Upraviť konfiguráciu doplnku IPTV Simple Client podľa {}'
 
 _lang['cs'] = {}
 _lang['cs']['playlist_created'] = 'M3U Playlist byl vytvořený'
