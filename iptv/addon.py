@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 import sys
 import time
 
@@ -74,7 +74,7 @@ class IPTVAddon(xbmcaddon.Addon):
             is_helper = inputstreamhelper.Helper(stream_info.manifest_type, drm='com.widevine.alpha')
             if is_helper.check_inputstream():
                 item = xbmcgui.ListItem(path=stream_info.url)
-                item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
+                item.setProperty('inputstream', is_helper.inputstream_addon)
                 item.setProperty('inputstream.adaptive.manifest_type', stream_info.manifest_type)
                 item.setProperty('inputstream.adaptive.license_type', 'com.widevine.alpha')
                 item.setProperty('inputstream.adaptive.license_key', stream_info.drm.licence_key.to_string())
@@ -89,7 +89,7 @@ class IPTVAddon(xbmcaddon.Addon):
                     stream_info.headers.update({'User-Agent': stream_info.user_agent})
                 if stream_info.headers:
                     item.setProperty('inputstream.adaptive.stream_headers', '&'.join(['%s=%s' % (k, v) for (k, v) in
-                                                                                      stream_info.headers.items()]))
+                                                                                      list(stream_info.headers.items())]))
                 if stream_info.drm.media_renewal_url:
                     item.setProperty('inputstream.adaptive.media_renewal_url', stream_info.drm.media_renewal_url)
                 if stream_info.drm.media_renewal_time > 0:
@@ -98,21 +98,21 @@ class IPTVAddon(xbmcaddon.Addon):
 
         elif stream_info.manifest_type == 'mpd':
             item = xbmcgui.ListItem(path=stream_info.url)
-            item.setProperty('inputstreamaddon', 'inputstream.adaptive')
+            item.setProperty('inputstream', 'inputstream.adaptive')
             item.setProperty('inputstream.adaptive.manifest_type', stream_info.manifest_type)
 
             if stream_info.user_agent:
                 stream_info.headers.update({'User-Agent': stream_info.user_agent})
             if stream_info.headers:
                 item.setProperty('inputstream.adaptive.stream_headers', '&'.join(['%s=%s' % (k, v) for (k, v) in
-                                                                                  stream_info.headers.items()]))
+                                                                                  list(stream_info.headers.items())]))
             xbmcplugin.setResolvedUrl(self._handle, True, item)
 
         elif stream_info.manifest_type == 'm3u':
             if stream_info.user_agent:
                 stream_info.headers.update({'User-Agent': stream_info.user_agent})
             if stream_info.headers:
-                stream_info.url += '|%s' % ('&'.join(['%s=%s' % (k, v) for (k, v) in stream_info.headers.items()]))
+                stream_info.url += '|%s' % ('&'.join(['%s=%s' % (k, v) for (k, v) in list(stream_info.headers.items())]))
             item = xbmcgui.ListItem(path=stream_info.url)
             xbmcplugin.setResolvedUrl(self._handle, True, item)
             return
