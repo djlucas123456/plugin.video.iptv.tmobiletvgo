@@ -53,7 +53,7 @@ class MagioGoAddon(IPTVAddon):
         except MagioGoException as e:
             if e.id == 'DEVICE_MAX_LIMIT':
                 if self.getSetting('reuse_last_device') == 'true':
-                    device = min([d for d in self.client.devices() if not d.is_this])
+                    device = self.client.devices()[0]
                 else:
                     device = self._select_device()
 
@@ -82,8 +82,8 @@ class MagioGoAddon(IPTVAddon):
                 'plot': rec.programme.description,
                 'duration': rec.programme.duration
             })
-            if rec.programme.cover:
-                item.setArt({'thumb': rec.programme.cover, 'icon': rec.programme.cover})
+            if rec.programme.thumbnail:
+                item.setArt({'thumb': rec.programme.thumbnail, 'icon': rec.programme.thumbnail})
             item.setProperty('IsPlayable', 'true')
             item.addContextMenuItems([(self.getLocalizedString(30001),
                                        'RunPlugin(%s)' % self.url_for(self.delete_recording_route, rec.id))])
