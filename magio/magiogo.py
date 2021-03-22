@@ -162,8 +162,13 @@ class MagioGo(IPTVClient):
     def channel_stream_info(self, channel_id, programme_id=None):
         self._login()
         resp = self._get('https://czgo.magio.tv/v2/television/stream-url',
-                         params={'service': 'LIVE', 'name': self._device, 'devtype': 'OTT_WIN',
-                                 'id': channel_id, 'prof': self._quality, 'ecid': '', 'drm': 'verimatrix'},
+                         params={'service': 'TIMESHIFT',
+                                 'name': self._device,
+                                 'devtype': 'OTT_WIN',
+                                 'id': channel_id,
+                                 'prof': self._quality,
+                                 'ecid': '',
+                                 'drm': 'verimatrix'},
                          headers=self._auth_headers())
         si = StreamInfo()
         si.url = resp['url']
@@ -174,8 +179,13 @@ class MagioGo(IPTVClient):
     def programme_stream_info(self, programme_id):
         self._login()
         resp = self._get('https://czgo.magio.tv/v2/television/stream-url',
-                         params={'service': 'ARCHIVE', 'name': self._device, 'devtype': 'OTT_WIN',
-                                 'id': programme_id, 'prof': self._quality, 'ecid': '', 'drm': 'verimatrix'},
+                         params={'service': 'ARCHIVE',
+                                 'name': self._device,
+                                 'devtype': 'OTT_WIN',
+                                 'id': programme_id,
+                                 'prof': self._quality,
+                                 'ecid': '',
+                                 'drm': 'verimatrix'},
                          headers=self._auth_headers())
         si = StreamInfo()
         si.url = resp['url']
