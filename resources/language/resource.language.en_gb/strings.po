@@ -36,20 +36,20 @@ msgid "Quality"
 msgstr "Quality"
 
 msgctxt "#30111"
+msgid "Adaptive"
+msgstr "Adaptive"
+
+msgctxt "#30112"
 msgid "Low"
 msgstr "Low"
 
-msgctxt "#30112"
-msgid "Medium"
-msgstr "Medium"
-
 msgctxt "#30113"
-msgid "High"
-msgstr "High"
+msgid "Extra Low"
+msgstr "Extra Low"
 
 msgctxt "#30114"
-msgid "Extra High"
-msgstr "Extra High"
+msgid "Medium"
+msgstr "Medium"
 
 msgctxt "#30120"
 msgid "Playlist"
