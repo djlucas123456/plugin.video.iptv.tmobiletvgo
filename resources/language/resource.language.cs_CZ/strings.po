@@ -36,20 +36,20 @@ msgid "Quality"
 msgstr "Kvalita"
 
 msgctxt "#30111"
+msgid "Adaptive"
+msgstr "Adaptivní"
+
+msgctxt "#30112"
 msgid "Low"
 msgstr "Nízká"
 
-msgctxt "#30112"
-msgid "Medium"
-msgstr "Střední"
-
 msgctxt "#30113"
-msgid "High"
-msgstr "Vysoká"
+msgid "Extra Low"
+msgstr "Nízká lepší"
 
 msgctxt "#30114"
-msgid "Extra High"
-msgstr "Extra vysoká"
+msgid "Medium"
+msgstr "Střední"
 
 msgctxt "#30120"
 msgid "Playlist"
