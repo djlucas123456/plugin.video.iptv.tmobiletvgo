@@ -46,10 +46,10 @@ class MagioGoRecording:
 
 
 class MagioQuality:
-    low = 'p2'
-    medium = 'p3'
-    high = 'p4'
-    extra = 'p5'
+    low = 'p0'
+    medium = 'p1'
+    high = 'p2'
+    extra = 'p3'
 
     @staticmethod
     def get(index):
