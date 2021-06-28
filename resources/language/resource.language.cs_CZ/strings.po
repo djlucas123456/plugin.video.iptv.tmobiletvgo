@@ -45,7 +45,7 @@ msgstr "Nízká"
 
 msgctxt "#30113"
 msgid "Extra Low"
-msgstr "Nízká extra"
+msgstr "Nízká lepší"
 
 msgctxt "#30114"
 msgid "Medium"
