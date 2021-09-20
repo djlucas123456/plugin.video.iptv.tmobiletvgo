@@ -47,9 +47,9 @@ class MagioGoRecording:
 
 class MagioQuality:
     low = 'p0'
-    medium = 'p1'
-    high = 'p2'
-    extra = 'p3'
+    medium = 'p2'
+    high = 'p4'
+    extra = 'p5'
 
     @staticmethod
     def get(index):
@@ -119,7 +119,7 @@ class MagioGo(IPTVClient):
             self._post('https://czgo.magio.tv/v2/auth/init',
                        params={'dsid': 'Netscape.' + str(int(time.time())) + '.' + str(random.random()),
                                'deviceName': self._device,
-                               'deviceType': 'OTT_WIN',
+                               'deviceType': 'OTT_TV_WEBOS',
                                'osVersion': '0.0.0',
                                'appVersion': '0.0.0',
                                'language': 'SK'},
@@ -164,7 +164,7 @@ class MagioGo(IPTVClient):
         resp = self._get('https://czgo.magio.tv/v2/television/stream-url',
                          params={'service': 'TIMESHIFT',
                                  'name': self._device,
-                                 'devtype': 'OTT_WIN',
+                                 'devtype': 'OTT_TV_WEBOS',
                                  'id': channel_id,
                                  'prof': self._quality,
                                  'ecid': '',
@@ -181,7 +181,7 @@ class MagioGo(IPTVClient):
         resp = self._get('https://czgo.magio.tv/v2/television/stream-url',
                          params={'service': 'ARCHIVE',
                                  'name': self._device,
-                                 'devtype': 'OTT_WIN',
+                                 'devtype': 'OTT_TV_WEBOS',
                                  'id': programme_id,
                                  'prof': self._quality,
                                  'ecid': '',
