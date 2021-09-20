@@ -41,15 +41,15 @@ msgstr "Adaptivní"
 
 msgctxt "#30112"
 msgid "Low"
-msgstr "Nízká"
+msgstr "Nízká lepší"
 
 msgctxt "#30113"
 msgid "Extra Low"
-msgstr "Nízká lepší"
+msgstr "Střední"
 
 msgctxt "#30114"
 msgid "Medium"
-msgstr "Střední"
+msgstr "Nejlepší"
 
 msgctxt "#30120"
 msgid "Playlist"
